@@ -9,14 +9,14 @@
 Pod::Spec.new do |s|
 
   s.name         = "RLBAlertsPickers"
-  s.version      = "1.0"
+  s.version      = "1.1"
   s.summary      = "Advanced usage of UIAlertController with TextField, DatePicker, PickerView, TableView and CollectionView."
-  s.homepage     = "https://github.com/Appsido/Alerts-Pickers.git"
+  s.homepage     = "https://github.com/ShotSkydiver/Alerts-Pickers"
   s.license      = "MIT"
   s.author       = { "dillidon" => "dillidon@gmail.com" }
-  s.platform     = :ios, '11.0'
+  s.platform     = :ios, '10.0'
   s.swift_version = '4.0'
-  s.source       = { :git => "https://github.com/Appsido/Alerts-Pickers.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/ShotSkydiver/Alerts-Pickers", :tag => "#{s.version}" }
   s.source_files  = "Source/**/*.{swift}"
   s.resource  = "Source/Pickers/Locale/Countries.bundle"
 
