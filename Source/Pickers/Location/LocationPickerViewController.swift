@@ -81,6 +81,7 @@ final public class LocationPickerViewController: UIViewController {
         return $0
     }(MKMapView())
     
+    @available(iOS 11.0, *)
     lazy var scaleView: MKScaleView = {
         $0.scaleVisibility = .visible
         return $0
@@ -136,7 +137,9 @@ final public class LocationPickerViewController: UIViewController {
 	open override func viewDidLoad() {
 		super.viewDidLoad()
 		
-        mapView.addSubview(scaleView)
+        if #available(iOS 11.0, *) {
+            mapView.addSubview(scaleView)
+        }
         mapView.addSubview(locationButton)
         
 		locationManager.delegate = self

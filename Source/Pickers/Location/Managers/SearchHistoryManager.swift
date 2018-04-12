@@ -9,14 +9,14 @@ struct SearchHistoryManager {
 	
 	func history() -> [Location] {
 		let history = defaults.object(forKey: HistoryKey) as? [NSDictionary] ?? []
-		return history.flatMap(Location.fromDefaultsDic)
+        return history.compactMap(Location.fromDefaultsDic)
 	}
 	
 	func addToHistory(_ location: Location) {
 		guard let dic = location.toDefaultsDic() else { return }
 		
 		var history  = defaults.object(forKey: HistoryKey) as? [NSDictionary] ?? []
-		let historyNames = history.flatMap { $0[LocationDicKeys.name] as? String }
+        let historyNames = history.compactMap { $0[LocationDicKeys.name] as? String }
         let alreadyInHistory = location.name.flatMap(historyNames.contains) ?? false
 		if !alreadyInHistory {
 			history.insert(dic, at: 0)
@@ -53,20 +53,25 @@ extension CLLocationCoordinate2D {
 extension Location {
     
 	func toDefaultsDic() -> NSDictionary? {
-		guard let postalAddress = placemark.postalAddress,
-			let placemarkCoordinatesDic = placemark.location?.coordinate.toDefaultsDic()
-			else { return nil }
-		
-        let formatter = CNPostalAddressFormatter()
-        let addressDic = formatter.string(from: postalAddress)
-        
-		var dic: [String: AnyObject] = [
-			LocationDicKeys.locationCoordinates: location.coordinate.toDefaultsDic(),
-			LocationDicKeys.placemarkAddressDic: addressDic as AnyObject,
-			LocationDicKeys.placemarkCoordinates: placemarkCoordinatesDic
-		]
-		if let name = name { dic[LocationDicKeys.name] = name as AnyObject? }
-		return dic as NSDictionary?
+        if #available(iOS 11.0, *) {
+            guard let postalAddress = placemark.postalAddress,
+                let placemarkCoordinatesDic = placemark.location?.coordinate.toDefaultsDic()
+                else { return nil }
+            
+            let formatter = CNPostalAddressFormatter()
+            let addressDic = formatter.string(from: postalAddress)
+            
+            var dic: [String: AnyObject] = [
+                LocationDicKeys.locationCoordinates: location.coordinate.toDefaultsDic(),
+                LocationDicKeys.placemarkAddressDic: addressDic as AnyObject,
+                LocationDicKeys.placemarkCoordinates: placemarkCoordinatesDic
+            ]
+            if let name = name { dic[LocationDicKeys.name] = name as AnyObject? }
+            return dic as NSDictionary?
+        }
+        else {
+            return placemark.addressDictionary as NSDictionary?
+        }
 	}
 	
 	class func fromDefaultsDic(_ dic: NSDictionary) -> Location? {
