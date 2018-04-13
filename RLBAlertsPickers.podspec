@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "RLBAlertsPickers"
-  s.version      = "1.2"
+  s.version      = "1.2.1"
   s.summary      = "Advanced usage of UIAlertController with TextField, DatePicker, PickerView, TableView and CollectionView."
   s.homepage     = "https://github.com/ShotSkydiver/Alerts-Pickers"
   s.license      = "MIT"
